@@ -6,10 +6,15 @@ import 'package:operator_test/features/auth/register/ui/screens/result_screen.da
 import 'package:operator_test/generated/assets.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key, required this.imagePath, required this.camera});
+  const FormScreen(
+      {super.key,
+      required this.imagePath,
+      required this.camera,
+      required this.cardType});
 
   final String imagePath;
   final CameraDescription camera;
+  final String cardType;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -238,6 +243,7 @@ class _FormScreenState extends State<FormScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => FaceScreen(
+                                      cardType: widget.cardType,
                                       card: widget.imagePath,
                                       camera: widget.camera,
                                       cardNumber: cardNumber.text,

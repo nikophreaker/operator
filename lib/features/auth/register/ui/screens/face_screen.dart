@@ -10,7 +10,8 @@ class FaceScreen extends StatefulWidget {
       required this.name,
       required this.email,
       required this.camera,
-      required this.card});
+      required this.card,
+      required this.cardType});
 
   final String? cardNumber;
   final String? cardAccess;
@@ -18,6 +19,7 @@ class FaceScreen extends StatefulWidget {
   final String email;
   final CameraDescription camera;
   final String card;
+  final String cardType;
 
   @override
   State<FaceScreen> createState() => _FaceScreenState();
@@ -89,7 +91,7 @@ class _FaceScreenState extends State<FaceScreen> {
                       padding: const EdgeInsets.all(0.0),
                       decoration: BoxDecoration(
                         border:
-                        Border.all(color: Color(0xff7CFFFF), width: 5.0),
+                            Border.all(color: Color(0xff7CFFFF), width: 5.0),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ClipRRect(
@@ -105,7 +107,8 @@ class _FaceScreenState extends State<FaceScreen> {
                             fit: BoxFit.fitWidth,
                             child: Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.width * _controller.value.aspectRatio,
+                              height: MediaQuery.of(context).size.width *
+                                  _controller.value.aspectRatio,
                               child: CameraPreview(_controller),
                             ),
                           ),
@@ -138,6 +141,7 @@ class _FaceScreenState extends State<FaceScreen> {
                         builder: (context) => ResultScreen(
                           // Pass the automatically generated path to
                           // the DisplayPictureScreen widget.
+                          cardType: widget.cardType,
                           cardAccess: widget.cardAccess,
                           cardNumber: widget.cardNumber,
                           name: widget.name,
@@ -157,8 +161,8 @@ class _FaceScreenState extends State<FaceScreen> {
                     Icon(Icons.camera_alt_outlined),
                     Text(
                       "Ambil Foto",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
