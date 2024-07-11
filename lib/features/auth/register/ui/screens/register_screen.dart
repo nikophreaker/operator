@@ -50,6 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScanScreen(card: card, camera: widget.camera)));
               } else {
                 showModalBottomSheet(
+                    isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(32))),
