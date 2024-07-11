@@ -26,7 +26,12 @@ class _FormScreenState extends State<FormScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Formulir Registrasi",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -261,22 +266,22 @@ class _FormScreenState extends State<FormScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 50,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Color(0xff02AFE6),
-                        borderRadius: BorderRadius.circular(40),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 50,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Color(0xff02AFE6)),
                       ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: Text(
-                        'Batal',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        "Batal",
+                        style: TextStyle(
+                          color: Colors.lightBlue,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),

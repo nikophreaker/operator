@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:operator_test/features/auth/register/ui/screens/form_screen.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key, required this.card,required this.camera});
+  const ScanScreen({super.key, required this.card, required this.camera});
 
   final CameraDescription camera;
   final String card;
+
   @override
   State<ScanScreen> createState() => _ScanScreenState();
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
@@ -44,7 +44,12 @@ class _ScanScreenState extends State<ScanScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Pindai ${widget.card}",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -53,7 +58,7 @@ class _ScanScreenState extends State<ScanScreen> {
       body: Center(
         child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
@@ -65,8 +70,41 @@ class _ScanScreenState extends State<ScanScreen> {
                 future: _initializeControllerFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
+                    final scale = 1 /
+                        (_controller.value.aspectRatio *
+                            MediaQuery.of(context).size.aspectRatio);
+
                     // If the Future is complete, display the preview.
-                    return CameraPreview(_controller);
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      margin: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(0.0),
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Color(0xff7CFFFF), width: 5.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          topRight: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0),
+                          bottomLeft: Radius.circular(8.0),
+                        ),
+                        child: OverflowBox(
+                          alignment: Alignment.center,
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width * _controller.value.aspectRatio,
+                              child: CameraPreview(_controller),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
                   } else {
                     // Otherwise, display a loading indicator.
                     return const Center(child: CircularProgressIndicator());
@@ -108,7 +146,8 @@ class _ScanScreenState extends State<ScanScreen> {
                     Icon(Icons.camera_alt_outlined),
                     Text(
                       "Ambil Foto",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -120,5 +159,3 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 }
-
-

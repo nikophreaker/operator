@@ -3,7 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatefulWidget {
-  const ResultScreen({super.key, required this.cardNumber, required this.cardAccess, required this.name, required this.email,required this.cardPhoto,required this.facePhoto});
+  const ResultScreen(
+      {super.key,
+      required this.cardNumber,
+      required this.cardAccess,
+      required this.name,
+      required this.email,
+      required this.cardPhoto,
+      required this.facePhoto});
 
   final String? cardNumber;
   final String? cardAccess;
@@ -11,6 +18,7 @@ class ResultScreen extends StatefulWidget {
   final String email;
   final String cardPhoto;
   final String facePhoto;
+
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
@@ -21,7 +29,12 @@ class _ResultScreenState extends State<ResultScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Konfirmasi Data",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -30,37 +43,38 @@ class _ResultScreenState extends State<ResultScreen> {
       body: Container(
         child: Column(
           children: [
-            ExpansionTile(
-              title: Text('ExpansionTile 1'),
-              subtitle: Text('Trailing expansion arrow icon'),
-              children: <Widget>[
-                Container(
-                  width: 250.0,
-                  height: 250.0,
-                  alignment: Alignment.center,
-                  decoration: new BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/Launcher_Icon.png'),
-                        fit: BoxFit.fill
-                    ),
+            widget.cardNumber == "" && widget.cardNumber == ""
+                ? SizedBox()
+                : ExpansionTile(
+                    textColor: Color(0xff02AFE6),
+                    collapsedIconColor: Color(0xff02AFE6),
+                    title: Text('Kartu Identitas'),
+                    children: <Widget>[
+                      Image.file(File(widget.facePhoto),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          fit: BoxFit.fill),
+                    ],
                   ),
-                )
-              ],
-            ),
             ExpansionTile(
-              title: Text('ExpansionTile 1'),
-              subtitle: Text('Trailing expansion arrow icon'),
+              textColor: Color(0xff02AFE6),
+              collapsedIconColor: Color(0xff02AFE6),
+              title: Text('Foto Wajah'),
               children: <Widget>[
                 ListTile(title: Text('This is tile number 1')),
               ],
             ),
-            Image.file(File(widget.facePhoto)),
+            ExpansionTile(
+              textColor: Color(0xff02AFE6),
+              collapsedIconColor: Color(0xff02AFE6),
+              title: Text('Data Pribadi'),
+              children: <Widget>[
+                ListTile(title: Text('This is tile number 1')),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 18.0),
               child: GestureDetector(
-                onTap: () {
-
-                },
+                onTap: () {},
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 50,
@@ -77,22 +91,22 @@ class _ResultScreenState extends State<ResultScreen> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Color(0xff02AFE6),
-                  borderRadius: BorderRadius.circular(40),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 50,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Color(0xff02AFE6)),
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text(
-                  'Batal',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  "Batal",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),

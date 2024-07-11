@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:operator_test/features/auth/register/ui/screens/result_screen.dart';
 
 class FaceScreen extends StatefulWidget {
-  const FaceScreen({super.key, required this.cardNumber, required this.cardAccess, required this.name, required this.email,required this.camera, required this.card});
+  const FaceScreen(
+      {super.key,
+      required this.cardNumber,
+      required this.cardAccess,
+      required this.name,
+      required this.email,
+      required this.camera,
+      required this.card});
 
   final String? cardNumber;
   final String? cardAccess;
@@ -11,12 +18,12 @@ class FaceScreen extends StatefulWidget {
   final String email;
   final CameraDescription camera;
   final String card;
+
   @override
   State<FaceScreen> createState() => _FaceScreenState();
 }
 
 class _FaceScreenState extends State<FaceScreen> {
-
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
@@ -48,7 +55,12 @@ class _FaceScreenState extends State<FaceScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Ambil Foto Wajah",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -57,7 +69,7 @@ class _FaceScreenState extends State<FaceScreen> {
       body: Center(
         child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
@@ -70,7 +82,36 @@ class _FaceScreenState extends State<FaceScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // If the Future is complete, display the preview.
-                    return CameraPreview(_controller);
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      margin: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(0.0),
+                      decoration: BoxDecoration(
+                        border:
+                        Border.all(color: Color(0xff7CFFFF), width: 5.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          topRight: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0),
+                          bottomLeft: Radius.circular(8.0),
+                        ),
+                        child: OverflowBox(
+                          alignment: Alignment.center,
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width * _controller.value.aspectRatio,
+                              child: CameraPreview(_controller),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
                   } else {
                     // Otherwise, display a loading indicator.
                     return const Center(child: CircularProgressIndicator());
@@ -116,7 +157,8 @@ class _FaceScreenState extends State<FaceScreen> {
                     Icon(Icons.camera_alt_outlined),
                     Text(
                       "Ambil Foto",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -128,5 +170,3 @@ class _FaceScreenState extends State<FaceScreen> {
     );
   }
 }
-
-
