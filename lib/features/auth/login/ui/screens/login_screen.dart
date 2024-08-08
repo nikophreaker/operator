@@ -10,15 +10,16 @@ import 'package:operator_test/features/home/ui/screens/home_screen.dart';
 import 'package:operator_test/generated/assets.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.camera});
+  const LoginScreen({super.key, required this.camera, required this.camera2});
 
   final CameraDescription camera;
+  final CameraDescription camera2;
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool _obscureText = true;
 
   void _toggle() {
@@ -26,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
       _obscureText = !_obscureText;
     });
   }
+
+  final _formKey = GlobalKey<FormState>();
 
   int _currentPosition = 0;
   final PageController controller = PageController(initialPage: 0);
@@ -81,152 +84,189 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Positioned(
             bottom: 0,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.45,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Text("Email"),
-                          ),
-                          TextField(
-                            style: TextStyle(fontSize: 12.0, height: 1),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: Color(0xff7CFFFF)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: Color(0xff7CFFFF)),
-                              ),
-                              hintText: "example@caliana.id",
-                              hintStyle: TextStyle(
-                                  color: Colors.grey
-                              ),
-                              prefixIcon: UnconstrainedBox(
-                                child: SvgPicture.asset(
-                                  Assets.imageEmail,
-                                  colorFilter: ColorFilter.mode(Color(0xff02AFE6), BlendMode.srcIn),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: Color(0xff7CFFFF))),
-                              errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: Color(0xff7CFFFF))),
+            child: Form(
+              key: _formKey,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.45,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text("Email"),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Text("Kata Sandi"),
-                          ),
-                          TextField(
-                            style: TextStyle(fontSize: 12.0, height: 1),
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                            TextFormField(
+                              validator: (value) {
+                                if (value != null) {
+                                  bool emailValid = RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(value);
+                                  if (!emailValid) {
+                                    return 'Email tidak valid';
+                                  }
+                                }
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              style: TextStyle(fontSize: 12.0, height: 1),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: Color(0xff7CFFFF)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: Color(0xff7CFFFF)),
-                              ),
-                              hintText: "Masukkan kata sandi anda",
-                              hintStyle: TextStyle(
-                                color: Colors.grey
-                              ),
-                              prefixIcon: UnconstrainedBox(
-                                child: SvgPicture.asset(
-                                  Assets.imagePassword,
-                                  colorFilter: ColorFilter.mode(Color(0xff02AFE6), BlendMode.srcIn),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff7CFFFF)),
                                 ),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggle,
-                                child: UnconstrainedBox(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff7CFFFF)),
+                                ),
+                                hintText: "example@caliana.id",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                prefixIcon: UnconstrainedBox(
                                   child: SvgPicture.asset(
-                                    Assets.imageEyes,
-                                    colorFilter: ColorFilter.mode(Color(0xff02AFE6), BlendMode.srcIn),
+                                    Assets.imageEmail,
+                                    colorFilter: ColorFilter.mode(
+                                        Color(0xff02AFE6), BlendMode.srcIn),
                                   ),
                                 ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff7CFFFF))),
+                                errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff7CFFFF))),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text("Kata Sandi"),
+                            ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              style: TextStyle(fontSize: 12.0, height: 1),
+                              obscureText: _obscureText,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: Color(0xff7CFFFF))),
-                              errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff7CFFFF)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: Color(0xff7CFFFF))),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff7CFFFF)),
+                                ),
+                                hintText: "Masukkan kata sandi anda",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                prefixIcon: UnconstrainedBox(
+                                  child: SvgPicture.asset(
+                                    Assets.imagePassword,
+                                    colorFilter: ColorFilter.mode(
+                                        Color(0xff02AFE6), BlendMode.srcIn),
+                                  ),
+                                ),
+                                suffixIcon: GestureDetector(
+                                  onTap: _toggle,
+                                  child: UnconstrainedBox(
+                                    child: SvgPicture.asset(
+                                      Assets.imageEyes,
+                                      colorFilter: ColorFilter.mode(
+                                          Color(0xff02AFE6), BlendMode.srcIn),
+                                    ),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff7CFFFF))),
+                                errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff7CFFFF))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Text(
+                          'Lupa kata sandi?',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            color: Color(0xff02AFE6),
+                            decoration: TextDecoration.underline,
+                            decorationColor: Color(0xff02AFE6),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen(
+                                            camera: widget.camera,
+                                            camera2: widget.camera2
+
+                                          )),
+                                );
+                              }
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Color(0xff02AFE6),
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Text(
+                                'Masuk',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Text(
-                        'Lupa kata sandi?',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: Color(0xff02AFE6),
-                          decoration: TextDecoration.underline,
-                          decorationColor: Color(0xff02AFE6),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => HomeScreen(camera: widget.camera,)),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 50,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Color(0xff02AFE6),
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Text(
-                              'Masuk',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

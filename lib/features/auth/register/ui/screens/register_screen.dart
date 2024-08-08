@@ -5,9 +5,10 @@ import 'package:operator_test/features/auth/register/ui/screens/scan_screen.dart
 import 'package:operator_test/generated/assets.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key, required this.camera});
+  const RegisterScreen({super.key, required this.camera, required this.camera2});
 
   final CameraDescription camera;
+  final CameraDescription camera2;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -47,7 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ScanScreen(card: card, camera: widget.camera)));
+                            ScanScreen(card: card, camera: widget.camera, camera2: widget.camera2)));
               } else {
                 showModalBottomSheet(
                     isScrollControlled: true,
@@ -152,7 +153,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                         ScanScreen(
                                                             card: _other.text,
                                                             camera:
-                                                                widget.camera),
+                                                                widget.camera,
+                                                            camera2:
+                                                            widget.camera2),
                                                   ),
                                                 );
                                               }

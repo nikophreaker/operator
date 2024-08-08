@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:operator_test/features/auth/register/ui/screens/form_screen.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key, required this.card, required this.camera});
+  const ScanScreen({super.key, required this.card, required this.camera, required this.camera2});
 
   final CameraDescription camera;
+  final CameraDescription camera2;
   final String card;
 
   @override
@@ -220,6 +221,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             // the DisplayPictureScreen widget.
                             cardType: widget.card,
                             camera: widget.camera,
+                            camera2: widget.camera2,
                             imagePath: image.path,
                           ),
                         ),

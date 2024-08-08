@@ -11,13 +11,14 @@ class FaceScreen extends StatefulWidget {
       required this.email,
       required this.camera,
       required this.card,
-      required this.cardType});
+      required this.cardType, required this.camera2});
 
   final String? cardNumber;
   final String? cardAccess;
   final String name;
   final String email;
   final CameraDescription camera;
+  final CameraDescription camera2;
   final String card;
   final String cardType;
 
@@ -36,7 +37,7 @@ class _FaceScreenState extends State<FaceScreen> {
     // create a CameraController.
     _controller = CameraController(
       // Get a specific camera from the list of available cameras.
-      widget.camera,
+      widget.camera2,
       // Define the resolution to use.
       ResolutionPreset.medium,
     );

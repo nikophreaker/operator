@@ -10,11 +10,14 @@ class FormScreen extends StatefulWidget {
       {super.key,
       required this.imagePath,
       required this.camera,
-      required this.cardType});
+      required this.cardType, required this.camera2});
 
   final String imagePath;
   final CameraDescription camera;
+  final CameraDescription camera2;
   final String cardType;
+
+
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -246,6 +249,7 @@ class _FormScreenState extends State<FormScreen> {
                                       cardType: widget.cardType,
                                       card: widget.imagePath,
                                       camera: widget.camera,
+                                      camera2: widget.camera2,
                                       cardNumber: cardNumber.text,
                                       cardAccess: cardAccess.text,
                                       name: name.text,
